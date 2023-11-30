@@ -170,11 +170,11 @@ extension AppDelegate {
         
         // Attach the mixer to the microphone input and the output of the audio engine.
         audioEngine.connect(audioEngine.inputNode, to: mixerNode, format: format)
-        audioEngine.connect(playerNode, to: mixerNode, format: AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 2))
+        audioEngine.connect(playerNode, to: mixerNode, format: AVAudioFormat(standardFormatWithSampleRate: format.sampleRate, channels: 2))
         
         let file = getAudioFile()
         mixerNode.installTap(onBus: 0,
-                             bufferSize: 1024,
+                             bufferSize: 4096,
                              format: format) {[weak self] buffer, audioTime in
             // Add captured audio to the buffer used for making a match.
             
