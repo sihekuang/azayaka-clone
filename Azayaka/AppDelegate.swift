@@ -19,9 +19,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SCStreamDelegate, SCStreamOu
     var stream: SCStream!
     var filePath: String!
     var audioFile: AVAudioFile?
-    var audioFile2: AVAudioFile?
-    var recorder: AVAudioRecorder?
-    let audioEngine = AVAudioEngine()
+    var audioEngine: AVAudioEngine!
     var audioSettings: [String : Any]!
     var availableContent: SCShareableContent?
     var filter: SCContentFilter?
@@ -30,6 +28,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, SCStreamDelegate, SCStreamOu
     var screen: SCDisplay?
     var window: SCWindow?
     var streamType: StreamType?
+    
+    let mixerNode = AVAudioMixerNode()
 //    var recorder: AVAudioRecorder? // mic recorder
 
     let excludedWindows = ["", "com.apple.dock", "com.apple.controlcenter", "com.apple.notificationcenterui", "com.apple.systemuiserver", "com.apple.WindowManager", "dev.mnpn.Azayaka", "com.gaosun.eul", "com.pointum.hazeover", "net.matthewpalmer.Vanilla", "com.dwarvesv.minimalbar"]
@@ -46,7 +46,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SCStreamDelegate, SCStreamOu
         
         // the `com.apple.screencapture` domain has the user set path for where they want to store screenshots or videos
         let saveDirectory = (UserDefaults(suiteName: "com.apple.screencapture")?.string(forKey: "location") ?? userDesktop) as NSString
-        
+        debugPrint(userDesktop)
         ud.register( // default defaults (used if not set)
             defaults: [
                 "audioFormat": AudioFormat.aac.rawValue,

@@ -19,6 +19,12 @@ func createPCMBuffer(for sampleBuffer: CMSampleBuffer) -> AVAudioPCMBuffer? {
     }
 }
 
+extension AppDelegate{
+    func combineBuffers(buffer: AVAudioPCMBuffer, with anotherBuffer: AVAudioPCMBuffer){
+        
+    }
+}
+
 extension AppDelegate {
     func initVideo(conf: SCStreamConfiguration) {
         startTime = nil

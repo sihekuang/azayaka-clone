@@ -15,6 +15,7 @@
 		17322D5E295929A000185BB6 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17322D5D295929A000185BB6 /* Menu.swift */; };
 		17BCDC80295BAC9400448A97 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BCDC7F295BAC9300448A97 /* Types.swift */; };
 		17DBD7C5295B0973005C0690 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17DBD7C4295B0973005C0690 /* Preferences.swift */; };
+		656E79902B18838A00071AA0 /* Recorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656E798F2B18838A00071AA0 /* Recorder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		17BCDC7F295BAC9300448A97 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		17DBD7C4295B0973005C0690 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		656E79522B15DE6A00071AA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		656E798F2B18838A00071AA0 /* Recorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recorder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 				172CDA622962011500A2C55D /* main.swift */,
 				17322D4E2958D08000185BB6 /* Assets.xcassets */,
 				17322D532958D08000185BB6 /* Azayaka.entitlements */,
+				656E798F2B18838A00071AA0 /* Recorder.swift */,
 			);
 			path = Azayaka;
 			sourceTree = "<group>";
@@ -151,6 +154,7 @@
 				17322D4B2958D07E00185BB6 /* AppDelegate.swift in Sources */,
 				17322D5C295928BE00185BB6 /* Recording.swift in Sources */,
 				17322D5E295929A000185BB6 /* Menu.swift in Sources */,
+				656E79902B18838A00071AA0 /* Recorder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

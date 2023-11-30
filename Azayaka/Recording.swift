@@ -74,9 +74,7 @@ extension AppDelegate {
             return
         }
         
-        // record microphone audio
-        recorder?.record()
-        
+        try! audioEngine.start()
 
         DispatchQueue.main.async { [self] in
             updateIcon()
@@ -100,9 +98,8 @@ extension AppDelegate {
         screen = nil
         updateTimer?.invalidate()
         
-        recorder?.stop()
-        recorder = nil
-
+        audioEngine.stop()
+        
         DispatchQueue.main.async { [self] in
             updateIcon()
             createMenu()
@@ -141,17 +138,29 @@ extension AppDelegate {
         audioFile = try! AVAudioFile(forWriting: URL(fileURLWithPath: filePath), settings: audioSettings, commonFormat: .pcmFormatFloat32, interleaved: false)
         
         
-        let settings = [
-            AVFormatIDKey : Int(kAudioFormatMPEG4AAC),
-            // Change below to any quality your app requires
-            AVEncoderAudioQualityKey: AVAudioQuality.medium.rawValue,
-            AVEncoderBitRateKey: 192000,
-            AVNumberOfChannelsKey: 1,
-            AVSampleRateKey: 44100.0
-        ] as [String : Any]
-//        recorder = try! AVAudioRecorder(url: URL(fileURLWithPath: filePath), settings: audioSettings)
-//        recorder?.delegate = self
-//        recorder?.prepareToRecord()
+        // prepare audio engine for recording
+        
+        audioEngine = AVAudioEngine()
+        // Get the native audio format of the engine's input bus.
+        let format = audioEngine.inputNode.inputFormat(forBus: 0)
+        
+        // Create a mixer node to convert the input.
+        audioEngine.attach(mixerNode)
+        
+        
+        // Attach the mixer to the microphone input and the output of the audio engine.
+        audioEngine.connect(audioEngine.inputNode, to: mixerNode, format: format)
+        mixerNode.installTap(onBus: 0,
+                             bufferSize: 1024,
+                             format: format) {[weak self] buffer, audioTime in
+            // Add captured audio to the buffer used for making a match.
+            
+            do{
+                try self?.audioFile?.write(from: buffer)
+            }catch{
+                debugPrint(error)
+            }
+        }
     }
 
     func getFilePath() -> String {
