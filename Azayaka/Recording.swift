@@ -74,7 +74,10 @@ extension AppDelegate {
             return
         }
         
+        prepareAudioRecording()
         try! audioEngine.start()
+//        playerNode.play()
+        
 
         DispatchQueue.main.async { [self] in
             updateIcon()
@@ -99,6 +102,7 @@ extension AppDelegate {
         updateTimer?.invalidate()
         
         audioEngine.stop()
+        playerNode.pause()
         
         DispatchQueue.main.async { [self] in
             updateIcon()
@@ -124,6 +128,21 @@ extension AppDelegate {
             assertionFailure("unknown audio format while setting audio settings: " + (ud.string(forKey: "audioFormat") ?? "[no defaults]"))
         }
     }
+    
+    private func getAudioFile()->AVAudioFile {
+//        let audioSettings: [String : Any] = [
+//            AVFormatIDKey: kAudioFormatMPEG4AAC,
+//            AVSampleRateKey: 16000,
+//            AVEncoderAudioQualityKey: AVAudioQuality.medium.rawValue,
+//        ]
+        
+        let userDesktop = (NSSearchPathForDirectoriesInDomains(.desktopDirectory, .userDomainMask, true) as [String]).first!
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "y-MM-dd HH.mm.ss"
+        let filePathUrl = URL(string: "\(userDesktop)/test.caf")!
+        let audioFile = try! AVAudioFile(forWriting: filePathUrl, settings: mixerNode.outputFormat(forBus: 0).settings)
+        return audioFile
+    }
 
     func prepareAudioRecording() {
         var fileEnding = ud.string(forKey: "audioFormat") ?? "wat"
@@ -146,17 +165,22 @@ extension AppDelegate {
         
         // Create a mixer node to convert the input.
         audioEngine.attach(mixerNode)
+        audioEngine.attach(playerNode)
         
         
         // Attach the mixer to the microphone input and the output of the audio engine.
         audioEngine.connect(audioEngine.inputNode, to: mixerNode, format: format)
+        audioEngine.connect(playerNode, to: mixerNode, format: AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 2))
+        
+        let file = getAudioFile()
         mixerNode.installTap(onBus: 0,
                              bufferSize: 1024,
                              format: format) {[weak self] buffer, audioTime in
             // Add captured audio to the buffer used for making a match.
             
             do{
-                try self?.audioFile?.write(from: buffer)
+//                try file.write(from: buffer)
+                try file.write(from: buffer)
             }catch{
                 debugPrint(error)
             }
@@ -190,15 +214,6 @@ extension AppDelegate {
             print("failed to fetch file for size indicator: \(error.localizedDescription)")
         }
         return "Unknown"
-    }
-    
-    // MARK: - Delegates
-    public func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
-        print("audioRecorderDidFinishRecording")
-    }
-    
-    public func audioRecorderEncodeErrorDidOccur(_ recorder: AVAudioRecorder, error: Error?) {
-        print("audioRecorderEncodeErrorDidOccur \(String(describing: error?.localizedDescription))")
     }
 }
 

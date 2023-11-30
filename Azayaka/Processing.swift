@@ -105,9 +105,13 @@ extension AppDelegate {
                 if streamType == .systemaudio { // write directly to file if not video recording
                     guard let samples = createPCMBuffer(for: sampleBuffer) else { return }
                     do {
-                        try audioFile?.write(from: samples)
+//                        try audioFile?.write(from: samples)
+                        playerNode.scheduleBuffer(samples)
                     }
-                    catch { assertionFailure("audio file writing issue") }
+                    catch {
+                        debugPrint(error)
+                    }
+                        //assertionFailure("audio file writing issue") }
                 } else { // otherwise send the audio data to AVAssetWriter
                     if awInput.isReadyForMoreMediaData {
                         awInput.append(sampleBuffer)

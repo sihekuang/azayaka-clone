@@ -30,6 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, SCStreamDelegate, SCStreamOu
     var streamType: StreamType?
     
     let mixerNode = AVAudioMixerNode()
+    let playerNode = AVAudioPlayerNode()
 //    var recorder: AVAudioRecorder? // mic recorder
 
     let excludedWindows = ["", "com.apple.dock", "com.apple.controlcenter", "com.apple.notificationcenterui", "com.apple.systemuiserver", "com.apple.WindowManager", "dev.mnpn.Azayaka", "com.gaosun.eul", "com.pointum.hazeover", "net.matthewpalmer.Vanilla", "com.dwarvesv.minimalbar"]
